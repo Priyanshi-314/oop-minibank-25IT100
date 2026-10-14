@@ -1,36 +1,29 @@
+
 public class Account {
+
     private final String accountNumber;
-    private String ownerName;
-    private long balance;
+    private final Customer customer;
+    private double balance;
     private boolean active;
 
-    private static long counter = 1000;
+    private static int counter = 1000;
 
-    public Account(String ownerName, long balance) {
-        this.accountNumber = generateAccountNumber();
-        this.ownerName = ownerName;
-        this.balance = balance;
+    public Account(Customer customer) {
+        this.customer = customer;
+        this.accountNumber = "ACC" + (++counter);
+        this.balance = 0.0;
         this.active = true;
-    }
-
-    public Account(String ownerName) {
-        this(ownerName, 0);
-    }
-
-    private static String generateAccountNumber() {
-        counter++;
-        return "ACC" + counter;
     }
 
     public String getAccountNumber() {
         return accountNumber;
     }
 
-    public String getOwnerName() {
-        return ownerName;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public long getBalance() {
+    public double getBalance() {
         return balance;
     }
 
@@ -38,21 +31,22 @@ public class Account {
         return active;
     }
 
-    public void deposit(long amount) {
-        if (amount > 0) {
-            balance += amount;
+    public boolean deposit(double amount) {
+        if (!active || !Double.isFinite(amount) || amount <= 0) {
+            return false;
         }
+
+        balance += amount;
+        return true;
     }
 
-    public boolean withdraw(long amount) {
-        if (amount > 0 && balance >= amount) {
-            balance -= amount;
-            return true;
+    public boolean withdraw(double amount) {
+        if (!active || !Double.isFinite(amount)
+                || amount <= 0 || amount > balance) {
+            return false;
         }
-        return false;
-    }
 
-    public void deactivate() {
-        active = false;
+        balance -= amount;
+        return true;
     }
 }

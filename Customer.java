@@ -1,21 +1,22 @@
+
 public class Customer {
+
+    private final String customerId;
     private String name;
     private String email;
     private String mobile;
-    private final String customerId;
 
-    private static long counter = 100;
+    private static int counter = 100;
 
     public Customer(String name, String email, String mobile) {
+        this.customerId = "CUST" + (++counter);
         this.name = name;
         this.email = email;
         this.mobile = mobile;
-        this.customerId = generateCustomerId();
     }
 
-    private static String generateCustomerId() {
-        counter++;
-        return "CUST" + counter;
+    public String getCustomerId() {
+        return customerId;
     }
 
     public String getName() {
@@ -28,9 +29,5 @@ public class Customer {
 
     public String getMobile() {
         return mobile;
-    }
-
-    public String getCustomerId() {
-        return customerId;
     }
 }
